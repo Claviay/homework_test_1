@@ -1,7 +1,21 @@
 <template>
   <div>
     <h1>Line Chart</h1>
-    <LineChart :temperatureData="temperatureData" :humidityData="humidityData" :timeData="timeData" />
+    <div>
+      <label>
+        <input type="checkbox" v-model="showTemperature" /> Show Temperature
+      </label>
+      <label>
+        <input type="checkbox" v-model="showHumidity" /> Show Humidity
+      </label>
+    </div>
+    <LineChart
+      :temperatureData="temperatureData"
+      :humidityData="humidityData"
+      :timeData="timeData"
+      :showTemperature="showTemperature"
+      :showHumidity="showHumidity"
+    />
   </div>
 </template>
 
@@ -18,15 +32,14 @@ export default {
     const humidityData = ref([]);
     const timeData = ref([]);
     const maxDataPoints = 20; // 最大数据点数
+    const showTemperature = ref(true);
+    const showHumidity = ref(true);
 
     const fetchData = () => {
       fetch('http://47.106.252.40:8000/getData')
           .then(response => response.json())
           .then(data => {
             const now = new Date().toLocaleTimeString();
-
-
-
 
             temperatureData.value.push(data.temperature);
             humidityData.value.push(data.humidity);
@@ -55,7 +68,9 @@ export default {
       temperatureData,
       humidityData,
       timeData,
+      showTemperature,
+      showHumidity,
     };
-  }
+  },
 };
 </script>
